@@ -1,0 +1,18 @@
+version: '3.1'
+services:
+  postgresql:
+    image: postgres:latest
+    restart: always
+    container_name: postgresql-container
+    environment:
+      POSTGRES_USER: roixy
+      POSTGRES_PASSWORD: mysecret
+      POSTGRES_DB: students-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+volumes:
+  postgresql-data:
+

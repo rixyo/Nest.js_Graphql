@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type Lesson {
-  id: ID!
+  _id: ID!
   name: String!
   description: String!
   startDate: String!

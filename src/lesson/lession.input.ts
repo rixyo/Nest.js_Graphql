@@ -4,7 +4,7 @@ import { MaxLength, MinLength, IsDateString } from 'class-validator';
 @InputType()
 export class CreateLessonInput {
   @MinLength(6)
-  @MaxLength(30)
+  @MaxLength(60)
   @Field()
   name: string;
   @MaxLength(255)

@@ -9,9 +9,10 @@ import { LessonResolver } from './lesson.resolver';
 import { LessonService } from './lesson.service';
 import { DataSourceModule } from 'src/datasource/datasource.module';
 import { LessonProviders } from './lesson.provider';
+import { StudentModule } from 'src/student/student.module';
 
 @Module({
-  imports: [DataSourceModule],
+  imports: [DataSourceModule, StudentModule],
   providers: [LessonResolver, LessonService, ...LessonProviders],
 })
 export class LessonModule {}

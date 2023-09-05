@@ -4,6 +4,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { LessonModule } from './lesson/lesson.module';
 import { ConfigModule } from '@nestjs/config';
 import { DataSourceModule } from './datasource/datasource.module';
+import { StudentModule } from './student/student.module';
 @Module({
   imports: [
     DataSourceModule,
@@ -18,6 +19,7 @@ import { DataSourceModule } from './datasource/datasource.module';
       context: ({ req }) => ({ req }),
     }),
     LessonModule,
+    StudentModule,
   ],
 })
 export class AppModule {}

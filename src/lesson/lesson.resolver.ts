@@ -11,6 +11,7 @@ import { LessonService } from './lesson.service';
 import { ParseUUIDPipe } from '@nestjs/common';
 import { CreateLessonInput } from './lession.input';
 import { filtersArgs } from './lesson.filter';
+import { AssignStudentToLession } from './assign-student-to-lession.input';
 @Resolver((of) => LessonType)
 export class LessonResolver {
   constructor(private readonly lessonService: LessonService) {}
@@ -37,5 +38,14 @@ export class LessonResolver {
       ...(search && { search }),
     };
     return await this.lessonService.findAll(filters, page);
+  }
+  @Mutation((returns) => LessonType)
+  async assignStudentsToLesson(
+    @Args('assignStudentsToLessonInput')
+    assignStudentsToLessonInput: AssignStudentToLession,
+  ) {
+    return await this.lessonService.assignStudentsToLesson(
+      assignStudentsToLessonInput,
+    );
   }
 }

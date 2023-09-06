@@ -8,19 +8,26 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { LessonType } from './lesson.type';
 import { LessonService } from './lesson.service';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { CreateLessonInput } from './lession.input';
-import { filtersArgs } from './lesson.filter';
 import { AssignStudentToLession } from './assign-student-to-lession.input';
+import { DeleteLessonType } from './lesson.delete.type';
+import { AuthGuard } from 'src/Guard/auth.guard';
+import { UserRole } from 'src/decorators/role.decorator';
+import { Role } from 'src/student/student.entity';
 @Resolver((of) => LessonType)
 export class LessonResolver {
   constructor(private readonly lessonService: LessonService) {}
   @Query((returns) => LessonType)
+  @UseGuards(AuthGuard)
+  @UserRole(Role.ADMIN, Role.USER)
   async lesson(@Args('id', new ParseUUIDPipe()) id: string) {
     return await this.lessonService.getLesson(id);
   }
 
   @Mutation((returns) => LessonType)
+  @UseGuards(AuthGuard)
+  @UserRole(Role.ADMIN)
   async createLesson(
     @Args('createLessonInput') createLessonInput: CreateLessonInput,
   ) {
@@ -47,5 +54,14 @@ export class LessonResolver {
     return await this.lessonService.assignStudentsToLesson(
       assignStudentsToLessonInput,
     );
+  }
+  @Mutation((returns) => DeleteLessonType)
+  async removeStudentFromLesson(@Args('id', new ParseUUIDPipe()) id: string) {
+    await this.lessonService.removeLesson(id);
+    // You can return a success message or any data you need
+    return {
+      message: 'Lesson removed successfully',
+      lessonId: id,
+    };
   }
 }

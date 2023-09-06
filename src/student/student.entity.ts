@@ -5,7 +5,12 @@ import {
   Entity,
   ManyToMany,
   JoinTable,
+  Unique,
 } from 'typeorm';
+export enum Role {
+  ADMIN = 'TEACHER',
+  USER = 'STUDENT',
+}
 @Entity()
 export class Student {
   @PrimaryGeneratedColumn('uuid')
@@ -14,7 +19,13 @@ export class Student {
   firstName: string;
   @Column()
   lastName: string;
-
+  @Column()
+  @Unique(['email'])
+  email: string;
+  @Column()
+  password: string;
+  @Column({ default: Role.USER })
+  role: Role;
   @ManyToMany(() => Lesson, (lesson) => lesson.students)
   @JoinTable({ name: 'student_lesson' })
   lessons: Lesson[];

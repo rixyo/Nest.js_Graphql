@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { CreateLessonInput } from './lession.input';
 import { AssignStudentToLession } from './assign-student-to-lession.input';
 import { Student } from 'src/student/student.entity';
+import { DeleteLessonType } from './lesson.delete.type';
 interface LessonFilters {
   name?: string;
   search?: string;
@@ -77,5 +78,16 @@ export class LessonService {
       .getMany();
     lesson.students = students;
     return await this.lessonRepository.save(lesson);
+  }
+  async removeLesson(id: string): Promise<DeleteLessonType> {
+    const query = this.lessonRepository.createQueryBuilder('lesson');
+    query.where('lesson._id = :id', { id });
+    const lesson = await query.getOne();
+    if (!lesson) throw new NotFoundException(`No lesson found`);
+    await this.lessonRepository.remove(lesson);
+    return {
+      message: 'Lesson removed successfully',
+      lessonId: lesson._id,
+    };
   }
 }

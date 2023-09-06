@@ -8,6 +8,13 @@ export class StudentType {
   firstName: string;
   @Field()
   lastName: string;
+  @Field()
+  email: string;
   @Field((type) => [LessonType], { nullable: 'itemsAndList' }) // Define the relationship with StudentType
   lessons: LessonType[];
+}
+@ObjectType('Authorization')
+export class AuthorizationType {
+  @Field((type) => String)
+  access_token: string;
 }

@@ -5,6 +5,9 @@ import { LessonModule } from './lesson/lesson.module';
 import { ConfigModule } from '@nestjs/config';
 import { DataSourceModule } from './datasource/datasource.module';
 import { StudentModule } from './student/student.module';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { GraphQLUserInterceptor } from './interceptors/user.interceptors';
+import { AuthGuard } from './Guard/auth.guard';
 @Module({
   imports: [
     DataSourceModule,
@@ -20,6 +23,12 @@ import { StudentModule } from './student/student.module';
     }),
     LessonModule,
     StudentModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: GraphQLUserInterceptor,
+    },
   ],
 })
 export class AppModule {}
